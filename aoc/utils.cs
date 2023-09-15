@@ -30,4 +30,8 @@ public static class Utils{
         }
         return permutate(cities, Enumerable.Empty<T>());
     }
+
+    public static string Stringify(this IEnumerable<char> value) {
+        return new string(value.ToArray());
+    }
 }
