@@ -34,4 +34,25 @@ public static class Utils{
     public static string Stringify(this IEnumerable<char> value) {
         return new string(value.ToArray());
     }
+
+    public static string ReverseString(this string value){
+        return value.Reverse().Stringify();
+    }
+
+    public static string JoinStrings(this IEnumerable<string> value, string separator=""){
+        return string.Join(separator, value);
+    }
+
+    public static T[] GetColumn<T>(this T[,] matrix, int columnNumber){
+        return Enumerable.Range(0, matrix.GetLength(0))
+                         .Select(y => matrix[y, columnNumber])
+                         .ToArray();
+    }
+
+
+    public static T[] GetRow<T>(this T[,] matrix, int rowNumber){
+        return Enumerable.Range(0, matrix.GetLength(1))
+                         .Select(x => matrix[rowNumber, x])
+                         .ToArray();
+    }
 }
