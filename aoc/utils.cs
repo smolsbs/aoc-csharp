@@ -35,6 +35,14 @@ public static class Utils{
         return new string(value.ToArray());
     }
 
+    public static (T v1, T v2) ToTuple<T>( this T[] values){
+        if (values.Length != 2){
+            throw new ArgumentException("pls no");
+        }
+        return (values[0], values[1]); 
+    }
+
+
     public static string ReverseString(this string value){
         return value.Reverse().Stringify();
     }
@@ -54,5 +62,9 @@ public static class Utils{
         return Enumerable.Range(0, matrix.GetLength(1))
                          .Select(x => matrix[rowNumber, x])
                          .ToArray();
+    }
+
+    public static char ToChar(this string s){
+        return s.ToCharArray()[0];
     }
 }
