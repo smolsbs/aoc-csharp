@@ -2,7 +2,7 @@ using AdventOfCode.Runner.Attributes;
 
 namespace Year2016.Day07;
 
-[ProblemInfo(2016, 7, "")]
+[ProblemInfo(2016, 7, "Internet Protocol Version 7")]
 public class Day07 : Problem<int, int>{
 
     private string[] _inputData = Array.Empty<string>();
