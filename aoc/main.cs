@@ -11,6 +11,7 @@ global using Superpower;
 global using Superpower.Model;
 global using Superpower.Parsers;
 global using AdventOfCode.Runner;
+global using Utils;
 
 namespace AdventOfCode;
 internal class Program

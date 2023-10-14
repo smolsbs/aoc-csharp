@@ -1,6 +1,5 @@
 using AdventOfCode.Runner.Attributes;
 using System.Data;
-using System.Numerics;
 
 namespace Year2016.Day8;
 
@@ -8,7 +7,7 @@ namespace Year2016.Day8;
 public class Day8: Problem<int, string>{
     private const int COLS = 50;
     private const int ROWS = 6;
-    private List<string> _inputData;
+    private List<string> _inputData = new List<string>();
     
     private bool[,] screen = new bool[ROWS, COLS];
     

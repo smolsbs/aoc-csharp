@@ -1,8 +1,8 @@
 namespace Assembunny;
 
 
-public struct instruction{
-    public funcs instr;
+public struct Instruction{
+    public Funcs instr;
     public List<(string type, int value)> args;
 
     public override string ToString()
@@ -15,10 +15,10 @@ public struct instruction{
             return _ret.ToString();
         }
 
-    public instruction (funcs i, List<(string, int)> arg){ instr = i; args = arg;}
+    public Instruction (Funcs i, List<(string, int)> arg){ instr = i; args = arg;}
 }
 
-public enum funcs{
+public enum Funcs{
     Cpy,
     Inc,
     Dec,
@@ -31,13 +31,13 @@ public class Assembunny{
 
     private Dictionary<char, int> registers = new Dictionary<char, int>() { {'a',0},{'b',0},{'c',0},{'d',0} };
     private int pointer = 0;
-    private List<instruction> code = new List<instruction>();
+    private List<Instruction> code = new List<Instruction>();
 
     public void Run(bool p2=false){
         while (pointer < code.Count){
 
             var thing = GetOptimizedCode();
-            instruction v = thing.Item1 ?? code[pointer];
+            Instruction v = thing.Item1 ?? code[pointer];
              if (p2){
                 Console.WriteLine(v.instr);
                 for (var idx = 0; idx < code.Count; idx++){
@@ -46,25 +46,25 @@ public class Assembunny{
             }
 
             switch(v.instr){
-                case funcs.Cpy:
+                case Funcs.Cpy:
                     Cpy(v);
                     break;
-                case funcs.Inc:
+                case Funcs.Inc:
                     Inc(v);
                     break;
-                case funcs.Dec:
+                case Funcs.Dec:
                     Dec(v);
                     break;
-                case funcs.Jnz:
+                case Funcs.Jnz:
                     Jnz(v);
                     break;
-                case funcs.Tgl:
+                case Funcs.Tgl:
                     Tgl(v);
                     break;
-                case funcs.Add:
+                case Funcs.Add:
                     Add(v, thing.Item2);
                     break;
-                case funcs.Mul:
+                case Funcs.Mul:
                     Mul(v, thing.Item2);
                     break;
             }
@@ -75,13 +75,13 @@ public class Assembunny{
         }
     }
 
-    private (instruction?, int) GetOptimizedCode(){
-        instruction curr = code[pointer];
+    private (Instruction?, int) GetOptimizedCode(){
+        Instruction curr = code[pointer];
 
-        if (curr.instr != funcs.Inc)
+        if (curr.instr != Funcs.Inc)
             return (null, 0);
         
-        if (code[pointer+1].instr != funcs.Dec || code[pointer+2].instr !!= funcs.Jnz)
+        if (code[pointer+1].instr != Funcs.Dec || code[pointer+2].instr !!= Funcs.Jnz)
             return (null, 0);
         
         if (code[pointer+1].args[0].value != code[pointer+2].args[0].value)
@@ -91,21 +91,21 @@ public class Assembunny{
         char a = (char)code[pointer+1].args[0].value;
         List<(string, int)> newArgs = new List<(string, int)>() {(" ", (int)a)};
 
-        if (code[pointer+3].instr != funcs.Dec || code[pointer+4].instr !!= funcs.Jnz)
-            return (new instruction(funcs.Add, newArgs), steps);
+        if (code[pointer+3].instr != Funcs.Dec || code[pointer+4].instr !!= Funcs.Jnz)
+            return (new Instruction(Funcs.Add, newArgs), steps);
         
         if (code[pointer+3].args[0].value != code[pointer+4].args[0].value)
-            return (new instruction(funcs.Add, newArgs), steps);
+            return (new Instruction(Funcs.Add, newArgs), steps);
 
         steps += 2;
         char b = (char)code[pointer+3].args[0].value;
         newArgs.Add( (" ", (int)b));
 
-        return (new instruction(funcs.Mul, newArgs), steps);
+        return (new Instruction(Funcs.Mul, newArgs), steps);
 
     }
 
-    private void Add(instruction cmd, int steps){
+    private void Add(Instruction cmd, int steps){
         var arg1 = cmd.args[0];
 
         registers['a'] += registers[(char)arg1.value];
@@ -115,7 +115,7 @@ public class Assembunny{
     }
 
 
-    private void Mul(instruction cmd, int steps){
+    private void Mul(Instruction cmd, int steps){
         var arg1 = cmd.args[0];
         var arg2 = cmd.args[1];
 
@@ -126,7 +126,7 @@ public class Assembunny{
     }
 
 
-    private void Cpy(instruction cmd){
+    private void Cpy(Instruction cmd){
         if (cmd.args[0].type == "a" && cmd.args[1].type == "b"){
             pointer++;
             return;
@@ -143,17 +143,17 @@ public class Assembunny{
         pointer++;
     } 
 
-    private void Inc(instruction cmd){
+    private void Inc(Instruction cmd){
         registers[(char)cmd.args[0].value]++;
         pointer++;
     }
 
-    private void Dec(instruction cmd){
+    private void Dec(Instruction cmd){
         registers[(char)cmd.args[0].value]--;
         pointer++;
     }
 
-    private void Jnz(instruction cmd){
+    private void Jnz(Instruction cmd){
         var arg1 = cmd.args[0];
         var arg2 = cmd.args[1];
         
@@ -171,7 +171,7 @@ public class Assembunny{
         }
    }
 
-    private void Tgl(instruction cmd){
+    private void Tgl(Instruction cmd){
         int jmp;
         var arg1 = cmd.args[0];
         if (arg1.type == "a")
@@ -184,22 +184,22 @@ public class Assembunny{
             return;
         }
 
-        instruction toChange = code[pointer+jmp];
+        Instruction toChange = code[pointer+jmp];
 
-        funcs newFunc;
+        Funcs newFunc;
 
         if (toChange.args.Count == 1){
-            if (toChange.instr == funcs.Inc)
-                newFunc = funcs.Dec;
+            if (toChange.instr == Funcs.Inc)
+                newFunc = Funcs.Dec;
             else
-                newFunc = funcs.Inc;
+                newFunc = Funcs.Inc;
         }else{
-            if (toChange.instr == funcs.Jnz)
-                newFunc = funcs.Cpy;
+            if (toChange.instr == Funcs.Jnz)
+                newFunc = Funcs.Cpy;
             else
-                newFunc = funcs.Jnz;
+                newFunc = Funcs.Jnz;
         }
-        code[pointer+jmp] = new instruction {
+        code[pointer+jmp] = new Instruction {
             instr = newFunc, 
             args = toChange.args
         };
@@ -214,19 +214,19 @@ public class Assembunny{
     public static Assembunny Create(string[] instructs){
         Assembunny aux = new Assembunny();
         foreach(var line in instructs){
-            instruction i = new instruction();
+            Instruction i = new Instruction();
             List<(string type, int value)> a = new List<(string,int)>();
             int v1;
             var cmd = line.Split(" ");
             switch (cmd[0]){
                 case "inc":
                     a.Add(("regA", (int)cmd[1].ToChar()));
-                    i = new instruction{instr = funcs.Inc, args = a };
+                    i = new Instruction{instr = Funcs.Inc, args = a };
                     break;
 
                 case "dec":
                     a.Add(("regA", (int)cmd[1].ToChar()));
-                    i = new instruction{instr = funcs.Dec, args = a};
+                    i = new Instruction{instr = Funcs.Dec, args = a};
                     break;
 
                 case "cpy":
@@ -237,7 +237,7 @@ public class Assembunny{
                         a.Add(("regA", (int)cmd[1].ToChar()));
                         a.Add(("regB", (int)cmd[2].ToChar()));
                     }
-                    i = new instruction{instr= funcs.Cpy, args = a};
+                    i = new Instruction{instr= Funcs.Cpy, args = a};
                     break;
 
                 case "jnz":
@@ -260,7 +260,7 @@ public class Assembunny{
                             a.Add(("regB", (int)cmd[2].ToChar()));
                     }
 
-                    i = new instruction{instr= funcs.Jnz, args = a};
+                    i = new Instruction{instr= Funcs.Jnz, args = a};
                     break;
 
                 case "tgl":
@@ -270,7 +270,7 @@ public class Assembunny{
                     else
                         a.Add(("regA", (int)cmd[1].ToChar()));
 
-                    i = new instruction{instr=funcs.Tgl, args=a};
+                    i = new Instruction{instr=Funcs.Tgl, args=a};
                     break;
             }
             aux.code.Add(i);

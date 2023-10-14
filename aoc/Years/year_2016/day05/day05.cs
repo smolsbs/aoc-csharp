@@ -7,7 +7,7 @@ namespace Year2016.Day02;
 [ProblemInfo(2016, 5, "How About a Nice Game of Chess?")]
 public class Day05 : Problem{
 
-    private string _inputData;
+    private string _inputData = "";
     private char[] pw = new char[8];
     private Dictionary<int, char?> forP2 = new Dictionary<int, char?>();
     public override void LoadInput() {

@@ -6,7 +6,6 @@ namespace Year2016.Day9;
 [ProblemInfo(2016, 9, "Explosives in Cyberspace")]
 public class Day9: Problem<int,BigInteger>{
     private string _inputData = "";
-	private string _finalString = "";
 
     public override void LoadInput() {
         _inputData = ReadInputText();
