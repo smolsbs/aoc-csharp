@@ -1,3 +1,6 @@
+namespace Utils;
+
+
 public static class Utils{
     public static int mod(this int a, int n)
     {
