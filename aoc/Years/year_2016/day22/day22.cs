@@ -5,14 +5,14 @@ namespace Year2016.Day22;
 
 [ProblemInfo(2016, 22, "Grid Computing")]
 public class Day22: Problem<int,int>{
-    private List<Node> nodes = new List<Node>(); 
+    private List<NodeThing> nodes = new List<NodeThing>(); 
 
     public override void LoadInput() {
         Regex finder = new Regex(@"x(?<x>\d+)-y(?<y>\d+)\s+(?<size>\d+)T\s+(?<used>\d+)T\s+(?<avail>\d+)T\s+(?<perc>\d+)%");
         foreach( var line in ReadInputLines() ){
             var m = finder.Match(line);
             if (m.Success){
-                var entry = new Node{
+                var entry = new NodeThing{
                     x=int.Parse(m.Groups["x"].Value),
                     y=int.Parse(m.Groups["y"].Value),
                     size=int.Parse(m.Groups["size"].Value),
@@ -171,7 +171,7 @@ public class Day22: Problem<int,int>{
     }
 }
 
-public struct Node{
+public struct NodeThing{
     public int x;
     public int y;
     public int size;
