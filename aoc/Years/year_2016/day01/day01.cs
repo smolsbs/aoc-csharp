@@ -1,32 +1,51 @@
-namespace Year2016.Day01;
+using AdventOfCode.Runner.Attributes;
 using System.Drawing;
-public class Day01{
-    public static void Run(string Path){
-        IEnumerable<string> cmds = File.ReadAllText(Path).Split(", ");
-        int compass = 0; // 0 for N, 1 for E, 2 for S, 3 for W  
-        Point coords = new Point(0,0);
-        HashSet<string> visited = new HashSet<string>(){coords.ToString()};
-        int p2 = -1;
 
-        foreach(var c in cmds){
+namespace Year2016.Day02;
+
+[ProblemInfo(2016, 1, "No Time for a Taxicab")]
+public class Day01 : Problem<int, int>{
+    private string[] _inputData = Array.Empty<string>();
+    private Point position = new Point(0,0);
+    private HashSet<string> visited = new HashSet<string>();
+
+    public override void LoadInput() {
+        _inputData = ReadInputText().Split(", ");
+    }
+
+    public override void CalculatePart1() {
+        Part1 = Run();
+    }
+
+    public override void CalculatePart2() {
+        position = new Point(0,0);
+        visited = new HashSet<string>();
+        Part2 = Run(true);
+    }
+
+    private int Run(bool p2=false){
+        visited.Add(position.ToString());
+        int compass = 0; // 0 for N, 1 for E, 2 for S, 3 for W  
+
+        foreach(var cmd in _inputData){
             
-            if(c[0] == 'R') 
+            if(cmd[0] == 'R') 
                 compass = (compass + 1).mod(4);
             else 
                 compass = (compass - 1).mod(4);
             
-            for (var i=0; i<int.Parse(c.Substring(1)); i++){
+            for (var i=0; i<int.Parse(cmd.Substring(1)); i++){
                 switch(compass){
-                    case 0: coords.Y++; break;
-                    case 1: coords.X++; break;
-                    case 2: coords.Y--; break;
-                    case 3: coords.X--; break;
+                    case 0: position.Y++; break;
+                    case 1: position.X++; break;
+                    case 2: position.Y--; break;
+                    case 3: position.X--; break;
                 }
-                if (visited.Add(coords.ToString()) == false && p2 == -1)
-                    p2 = Math.Abs(coords.X) + Math.Abs(coords.Y);
+                if (visited.Add(position.ToString()) == false && p2)
+                    return Math.Abs(position.X) + Math.Abs(position.Y);
             }
         }
-        int p1 = Math.Abs(coords.X) + Math.Abs(coords.Y);
-        Console.WriteLine($"Part 1: {p1}\nPart 2: {p2}");
+        return Math.Abs(position.X) + Math.Abs(position.Y);
     }
+
 }
