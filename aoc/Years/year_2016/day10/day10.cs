@@ -58,7 +58,7 @@ public class Day10: Problem<int, int>{
             if (outList.ContainsKey(0) && outList.ContainsKey(1) && outList.ContainsKey(2) && part2){
                 _ret =  outList[0] * outList[1] * outList[2];
                 run = false;
-        }
+            }
 
             if (states.low == -1 || states.high == -1){
                 commands.Enqueue(cmd);
