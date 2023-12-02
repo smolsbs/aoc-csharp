@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace aoc.Years.year_2023.day02 {
 
-namespace aoc.Years.year_2023.day02 {
 	internal class GameList {
 		private const int MAX_RED = 12;
 		private const int MAX_GREEN = 13;
 		private const int MAX_BLUE = 14;
 
-		public List<Game> game_list = new List<Game>();
+		public List<Game> game_list = new();
 
 		public class Game {
 			public int id;
-			public List<Round> tries = new List<Round>();
-
-			static public bool CheckIfValidGame(Game game) {
+			public List<Round> tries = new();
+			public static bool CheckIfValidGame(Game game) {
 				var aux = GetMinimumDices(game);
 
 				if(aux.red > GameList.MAX_RED)
 					return false;
-				if (aux.green > GameList.MAX_GREEN)
+				if(aux.green > GameList.MAX_GREEN)
 					return false;
-				if (aux.blue > GameList.MAX_BLUE)
+				if(aux.blue > GameList.MAX_BLUE)
 					return false;
 
 				return true;
@@ -33,7 +27,7 @@ namespace aoc.Years.year_2023.day02 {
 				int r = game.tries.Select(v => v.redDice).Max();
 				int g = game.tries.Select(v => v.greenDice).Max();
 				int b = game.tries.Select(v => v.blueDice).Max();
-				return (r,g,b);
+				return (r, g, b);
 			}
 		}
 
@@ -43,25 +37,29 @@ namespace aoc.Years.year_2023.day02 {
 			public int blueDice;
 		}
 
-
 		public void LoadGames(string[] gameList) {
 			foreach(var gameLine in gameList) {
-				Game game = new Game();
+				Game game = new();
 
 				string[] gameInfo = gameLine.Split(": ");
 				game.id = int.Parse(gameInfo[0].Split(" ")[1]);
 
-				foreach( var _round in gameInfo[1].Split("; ")) {
-					Round round = new Round();
+				foreach(var _round in gameInfo[1].Split("; ")) {
+					Round round = new();
 					foreach(var dice in _round.Split(", ")) {
-						(int diceNumber, char diceColor) = dice.Split(" ").Chunk(2).Select(v => (int.Parse(v[0]), v[1][0])).First();
+						(int diceNumber, char diceColor) = dice.Split(" ")
+															   .Chunk(2)
+															   .Select(v => (int.Parse(v[0]), v[1][0]))
+															   .First();
 						switch(diceColor) {
 							case 'r':
 								round.redDice = diceNumber;
 								break;
+
 							case 'g':
 								round.greenDice = diceNumber;
 								break;
+
 							case 'b':
 								round.blueDice = diceNumber;
 								break;
@@ -71,7 +69,6 @@ namespace aoc.Years.year_2023.day02 {
 				}
 				game_list.Add(game);
 			}
-			
 		}
 	}
 }
