@@ -13,15 +13,15 @@ namespace Year__YEAR__.Day__DAY__;
 
 [ProblemInfo(__YEAR__, __DAY__, "")]
 public class Day__DAY__: Problem{
-    public override void LoadInput() {
-        return;
-    }
-    public override void CalculatePart1() {
-        return;
-    }
-    public override void CalculatePart2() {
-        return;
-    }
+	public override void LoadInput() {
+		return;
+	}
+	public override void CalculatePart1() {
+		return;
+	}
+	public override void CalculatePart2() {
+		return;
+	}
 
 }"""
 

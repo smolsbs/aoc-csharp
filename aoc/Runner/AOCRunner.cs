@@ -25,15 +25,34 @@ public class AOCRunner
 		_years = new List<int>();
 		_selectedYear = DateTime.Now.Year;
 		FindProblemClasses();
+
 		if (!_loadedProblems.ContainsKey(_selectedYear))
 			_selectedYear = _loadedProblems.Keys.First();
-		
+
 		InitSizing();
 		if (_years.Count > 0)
 		{
 			_selectedDay = _loadedProblems[_selectedYear].Count - 1;
 			ConstrainListScroll();
 		}
+	}
+
+	public AOCRunner WithDay(int day)
+	{
+		var problem = _loadedProblems[_selectedYear].FirstOrDefault(d => d.info.Day == day);
+		if (problem == default)
+			throw new ArgumentException($"There are no problems have been loaded for the day '{day}' of year '{_selectedYear}'", nameof(day));
+
+		_selectedDay = _loadedProblems[_selectedYear].IndexOf(problem);
+		return this;
+	}
+
+	public AOCRunner WithYear(int year)
+	{
+		if (!_loadedProblems.ContainsKey(year))
+			throw new ArgumentException($"There are no problems have been loaded for the year '{year}'", nameof(year));
+		_selectedYear = year;
+		return this;
 	}
 
 	private void InitSizing()
@@ -290,7 +309,7 @@ public class AOCRunner
 			Console.Write(" Problems ");
 			RenderProblemList();
 		}
-		else 
+		else
 			RenderProblemResults();
 	}
 
