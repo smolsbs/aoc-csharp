@@ -386,3 +386,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+aoc/Years/*/*/input.txt
+# no inputs
+*/*/input
